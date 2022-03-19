@@ -7,27 +7,32 @@ using namespace std;
 class Solution
 {
     public:
-    
-    int maxProfit(int wt[],int profit[],int currentItem,int capacity,int n)
+    int maxProfit(int wt[],int profit[],int currentItem,int capacity,int n,unordered_map<string,int>&m)
      { 
        if(currentItem>=n)
        return 0;
-       int currentItemWeigth=wt[currentItem];
-       int currentItemPofit=profit[currentItem];
+       int currentItemWeight=wt[currentItem];
+       int currentItemProfit=profit[currentItem];
+       string currentKey = to_string(currentItem) + "_" + to_string(capacity);
+
+       if(m.find(currentKey)!=m.end())
+           return m[currentKey];
        int consider=0;
-     if(currentItemWeight<=capacity) //calling consider function when we are considering current item
-       consider=currentItemProfit+maxProfit(wt,profit,currentItem+1,capacity-currentItemWeight,n);
+      if(currentItemWeight<=capacity) //calling consider function when we are considering current item
+       consider=currentItemProfit+maxProfit(wt,profit,currentItem+1,capacity-currentItemWeight,n,m);
        
-     int notConsider=maxProfit(wt,profit,currentItem+1,capacity,n);
-      return max(Consider,notConsider);
+     int notConsider=maxProfit(wt,profit,currentItem+1,capacity,n,m);
+      m[currentKey]=max(consider,notConsider);
+      return m[currentKey];
      }
      //Function to return max value that can be put in knapsack of capacity W.
     int knapSack(int capacity, int wt[], int val[], int n) 
     { 
        // Your code here
-       unordered_map<String,int>mp;
-       return maxProfit(wt,val,0,capacity,n); // this function has first weight array , then values array,then starting value,total capacity of bag, total no of items
+       unordered_map<string,int>m;
+       return maxProfit(wt,val,0,capacity,n,m); // this function has first weight array , then values array,then starting value,total capacity of bag, total no of items
     } 
+
 };
 
 // { Driver Code Starts.
