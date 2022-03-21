@@ -1,4 +1,4 @@
-// { Driver Code Starts
+/// { Driver Code Starts
 // Initial Template for C++
 
 #include <bits/stdc++.h>
@@ -9,29 +9,31 @@ using namespace std;
 
 class Solution{
 public:
-    int maxProfit(int wt[],int val[],int currentItem,int capacity,int n,vector<vector<int>>&mp)
+    int maxProfit(int wt[],int val[],int currentItem,int capacity,int n,int dp[][1002])
     {
         if(capacity==0 )
          return 0;
         if(currentItem>=n)
-           return -1;
-        int currentItemWeight=wt[currentItem];
-        int currentItemProfit=val[currentItem];
-        if(mp[currentItem][capacity]!=-1)
-          return mp[currentItem][capacity];
+           return 0;
+       
+        if(dp[currentItem][capacity]!= -1)
+          return dp[currentItem][capacity];
         int consider=0;
-        if(currentItemWeight<=capacity)
-        { consider=currentItemProfit+maxProfit(wt,val,currentItem,capacity-currentItemWeight,n,mp);}
-        int notConsider=maxProfit(wt,val,currentItem+1,capacity,n,mp);
-        mp[currentItem][capacity]= max(consider,notConsider);
+        if(wt[currentItem]<=capacity)
+        { 
+            consider= val[currentItem] +maxProfit(wt,val,currentItem,capacity-wt[currentItem],n,dp);
+        }
+        int notConsider=maxProfit(wt,val,currentItem+1,capacity,n,dp);
+        dp[currentItem][capacity]= max(consider,notConsider);
         return max(consider,notConsider);
     }
-    int knapSack(int n, int capacity, int val[], int wt[])
-    { vector<vector<int>>mp(1002,vector<int>(1002,-1));
-        int profit = maxProfit(wt,val,capacity,n,0,mp);
-        if(profit == -1) return 0;
-        return profit;
+    int knapSack(int N, int capacity, int val[], int wt[])
+    { 
         // code here
+      int dp[1002][1002];
+      memset(dp,-1,sizeof(dp));
+      return maxProfit(wt,val,0,capacity,N,dp);
+        
     }
 };
 
