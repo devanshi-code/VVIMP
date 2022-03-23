@@ -1,37 +1,27 @@
 class Solution {
 public:
-    int maximumProfit(vector<int>& prices,int current,int canBuy,int transCount,int dp[1001][2][101])
+    int maximumProfit(vector<int>& prices,int current,bool canBuy,int transCount,vector<vector<vector<int>>>&vec)
 {
     if(current>=prices.size() || transCount<=0)
             return 0;
-    if(dp[current][canBuy][transCount]!=-1) 
-        return dp[current][canBuy][transCount];
-    int idle=maximumProfit(prices,current+1,canBuy,transCount,dp);    
+    if(vec[current][canBuy][transCount]!=-1) 
+        return vec[current][canBuy][transCount];
+      
     if(canBuy==1)   
     {
-        
-        int buy=-prices[current]+maximumProfit(prices,current+1,0,transCount,dp);
-        return max(idle,buy);
+        int idle=maximumProfit(prices,current+1,canBuy,transCount,vec);  
+        int buy=-prices[current]+maximumProfit(prices,current+1,false,transCount,vec);
+        return vec[current][canBuy][transCount]= max(idle,buy);
     }    
    else{
-       
-       int sell=prices[current]+maximumProfit(prices,current+1,1,transCount-1,dp);
-       return max(idle,sell);
+       int idle=maximumProfit(prices,current+1,canBuy,transCount,vec);
+       int sell=prices[current]+maximumProfit(prices,current+1,true,transCount-1,vec);
+       return vec[current][canBuy][transCount]= max(idle,sell);
    }
 }       
     int maxProfit(vector<int>& prices) {
-        int dp[1001][2][101];
-        for(int i=0;i<1001;i++)
-        {
-            for(int j=0;j<2;j++)
-            {
-                for(int k1=0;k1<101;k1++)
-                {
-                    dp[i][j][k1]=-1;
-                }
-            }
-        }
+         vector<vector<vector<int>>> vec(prices.size(),vector<vector<int>>(2,vector<int>(2,-1)));
 
-        return maximumProfit(prices,0,1,1,dp);
+        return maximumProfit(prices,0,1,1,vec);
     }
 };
