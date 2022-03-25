@@ -1,11 +1,10 @@
 class Solution {
 public:
-    int maximumProfit(vector<int>& prices,int current,bool canBuy,vector<vector<vector<int>>>&vec)
+    int maximumProfit(vector<int>&prices,int current,bool canBuy,vector<vector<int>>&vec)
 {
-    if(current>=prices.size() )
-            return 0;
-    if(vec[current][canBuy]!=-1) 
-        return vec[current][canBuy];
+    if(current>=prices.size()) return 0;
+     if(vec[current][canBuy]!= -1)
+           return vec[current][canBuy];
       
     if(canBuy==1)   
     {
@@ -20,8 +19,7 @@ public:
    }
 }       
     int maxProfit(vector<int>& prices) {
-         vector<vector<int>>> vec(prices.size(),vector<int>(2,-1)));
-
+          vector<vector<int>>vec(prices.size(),vector<int>(2,-1));
         return maximumProfit(prices,0,1,vec);
     }
 };
