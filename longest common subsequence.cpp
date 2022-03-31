@@ -1,26 +1,27 @@
 class Solution {
 public:
-    int lengthofLCS(string s1,string s2,int i,int j,int m,int n,unordered_map<string,int>&memo)
+    int lengthofLCS(string &s1,string &s2,int i,int j,int m,int n,int dp[1001][1001])
     {
         if(i>=m || j>=n)
             return 0;
         
-        int ans=0;
-        string currentKey=to_string(i)+"_"+to_string(j);
-        if(memo.find(currentKey)!=memo.end())
-            return memo[currentKey];
+        
+        
+        if(dp[i][j]!= -1)
+           return dp[i][j];
         if(s1[i]==s2[j]){
-            ans=1+lengthofLCS(s1,s2,i+1,j+1,m,n,memo);
+            dp[i][j]=1+lengthofLCS(s1,s2,i+1,j+1,m,n,dp);
         }
         else{
-            int a=lengthofLCS(s1,s2,i,j+1,m,n,memo);
-            int b=lengthofLCS(s1,s2,i+1,j,m,n,memo);
-            ans=max(a,b);
+            int a=lengthofLCS(s1,s2,i,j+1,m,n,dp);
+            int b=lengthofLCS(s1,s2,i+1,j,m,n,dp);
+            dp[i][j]=max(a,b);
         }
-        return ans;
+        return dp[i][j];
     }    
     int longestCommonSubsequence(string s1, string s2) {
-        unordered_map<string,int>memo;
-        return lengthofLCS(s1,s2,0,0,s1.size(),s2.size(),memo);
+       int dp[1001][1001];
+       memset(dp,-1,sizeof(dp));
+       return lengthofLCS(s1,s2,0,0,s1.size(),s2.size(),dp);
     }
 };
