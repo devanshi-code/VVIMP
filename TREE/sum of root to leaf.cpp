@@ -3,6 +3,7 @@ public:
     void rootToLeaf(TreeNode* root,string currentPath,int answer[])
     {   
         if(root->left== NULL && root->right== NULL)
+            //change current path->binary string to decimal and add in answer
         {   currentPath+=to_string(root->val);
             answer[0]+=stoi(currentPath,0,2);
             return;
@@ -15,7 +16,7 @@ public:
         return;
     }    
     int sumRootToLeaf(TreeNode* root) {
-        int* answer=new int[1];//can't pass variable as int value is always passed by value
+        int* answer=new int[1];//dynamic allocation of memory
         answer[0]=0;
         rootToLeaf(root,"",answer);
         return answer[0];
